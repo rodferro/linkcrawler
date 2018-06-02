@@ -1,1 +1,1 @@
-# tech-test
+# Technical Test
