@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <table id="links" class="table table-striped" style="table-layout: fixed; width: 100%">
+    <colgroup>
+      <col style="width: 10%;">
+      <col>
+      <col>
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">From URL</th>
+        <th scope="col">To URL</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for link in links %}
+      <tr>
+        <th scope="row">{{ link.id }}</td>
+        <td style="word-wrap: normal">{{ link.from_url }}</td>
+        <td style="word-wrap: normal">{{ link.to_url }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
