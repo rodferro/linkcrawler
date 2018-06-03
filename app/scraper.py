@@ -11,7 +11,10 @@ def extract_links(from_url, n_iter=100):
     queue.append(from_url)
     while queue:
         from_url = queue.popleft()
-        html = requests.get(from_url).text
+        try:
+            html = requests.get(from_url, timeout=1).text
+        except requests.exceptions.RequestException as e:
+            continue
         html_soup = BeautifulSoup(html, 'html.parser')
         a_tags = html_soup.find_all("a", href=re.compile("^https?://"))
         for a_tag in a_tags:
@@ -21,7 +24,7 @@ def extract_links(from_url, n_iter=100):
             # let's limit the number of iterations, 
             # otherwise we could be here for a very long time.
             count += 1
-            if count > n_iter:
+            if count == n_iter: 
                 return
 
 def save_link(from_url, to_url):
