@@ -46,6 +46,10 @@
       $(document).ready(function() {
         $('#links').DataTable();
       });
+      $("form").submit(function(e) {
+        var $btn = $(this).find('#btnExtract');
+        $btn.button('loading');
+      });
     </script>
   </body>
 </html>
