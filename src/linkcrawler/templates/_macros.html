@@ -1,0 +1,15 @@
+{% macro badge(status) -%}
+<span class="badge badge-{{ status.value }}" data-status>{{ status.value }}</span>
+{%- endmacro %}
+
+{% macro field(name, label, form, errors, placeholder, type="number", step=None, min=None, max=None, hint=None) -%}
+<label class="field{% if errors.get(name) %} has-error{% endif %}">
+  <span>{{ label }}</span>
+  <input type="{{ type }}" name="{{ name }}" value="{{ form.get(name, '') }}" placeholder="{{ placeholder }}"
+    {%- if step is not none %} step="{{ step }}"{% endif %}
+    {%- if min is not none %} min="{{ min }}"{% endif %}
+    {%- if max is not none %} max="{{ max }}"{% endif %}>
+  {% if errors.get(name) %}<small class="error">{{ errors[name] }}</small>
+  {% elif hint %}<small class="muted">{{ hint }}</small>{% endif %}
+</label>
+{%- endmacro %}

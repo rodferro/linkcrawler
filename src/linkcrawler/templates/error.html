@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ exc.status_code }} · LinkCrawler{% endblock %}
+{% block body %}
+<section class="card empty">
+  <h1>{{ exc.status_code }}</h1>
+  <p class="muted">{{ exc.detail }}</p>
+  <p><a class="btn" href="/">Back to crawls</a></p>
+</section>
+{% endblock %}

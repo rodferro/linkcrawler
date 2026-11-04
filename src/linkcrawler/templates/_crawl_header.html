@@ -1,0 +1,31 @@
+{% from "_macros.html" import badge %}
+<section class="card crawl-header" id="crawl" data-id="{{ crawl.id }}" data-finished="{{ 'true' if crawl.status.finished else 'false' }}">
+  <div class="title-row">
+    <div>
+      <p class="eyebrow">Crawl #{{ crawl.id }}</p>
+      <h1 class="url"><a href="{{ crawl.start_url }}" rel="noreferrer noopener" target="_blank">{{ crawl.start_url }}</a></h1>
+    </div>
+    <div class="actions">
+      {{ badge(crawl.status) }}
+      {% if not crawl.status.finished %}<button class="btn danger" id="cancel">Cancel</button>{% endif %}
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><div class="bar" style="width: {{ (100 * crawl.pages_crawled / crawl.max_pages) | round | int }}%"></div></div>
+  <dl class="stats">
+    <div><dt>Pages</dt><dd><span data-stat="pages_crawled">{{ crawl.pages_crawled }}</span> <small class="muted">/ {{ crawl.max_pages }}</small></dd></div>
+    <div><dt>Failed</dt><dd data-stat="pages_failed">{{ crawl.pages_failed }}</dd></div>
+    <div><dt>Links</dt><dd data-stat="links_found">{{ crawl.links_found }}</dd></div>
+    <div><dt>Duration</dt><dd data-stat="duration">{% set d = duration(crawl.started_at, crawl.finished_at) %}{{ '%.1fs' % d if d is not none else '–' }}</dd></div>
+  </dl>
+  {% if crawl.error %}<p class="error">{{ crawl.error }}</p>{% endif %}
+  <p class="options muted">
+    depth ≤ {{ crawl.max_depth }} · {{ 'same domain' if crawl.same_domain else 'any domain' }} ·
+    {{ 'robots.txt respected' if crawl.respect_robots else 'robots.txt ignored' }} ·
+    {{ crawl.per_host_concurrency }}/host, {{ crawl.per_host_delay }}s delay · timeout {{ crawl.timeout }}s
+  </p>
+  <nav class="tabs">
+    <a href="{{ url_for('crawl_detail', crawl_id=crawl.id) }}" {% if tab == 'pages' %}aria-current="page"{% endif %}>Pages</a>
+    <a href="{{ url_for('crawl_links', crawl_id=crawl.id) }}" {% if tab == 'links' %}aria-current="page"{% endif %}>Links</a>
+    <a href="{{ url_for('crawl_graph', crawl_id=crawl.id) }}" {% if tab == 'graph' %}aria-current="page"{% endif %}>Graph</a>
+  </nav>
+</section>

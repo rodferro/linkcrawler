@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Crawl #{{ crawl.id }} · LinkCrawler{% endblock %}
+{% block body %}
+{% include "_crawl_header.html" %}
+<section class="card">
+  <div class="table-wrap">
+  <table id="pages">
+    <thead><tr><th class="num">Depth</th><th>URL</th><th>Title</th><th class="num">Status</th><th class="num">Out-links</th><th class="num">Time</th></tr></thead>
+    <tbody>
+    {% for p in pages %}
+      <tr>
+        <td class="num">{{ p.depth }}</td>
+        <td class="url"><a href="{{ p.url }}" rel="noreferrer noopener" target="_blank">{{ p.url }}</a></td>
+        <td>{{ p.title or '' }}{% if p.error %} <span class="error">{{ p.error }}</span>{% endif %}</td>
+        <td class="num"><span class="code code-{{ (p.status_code or 0) // 100 }}">{{ p.status_code or '–' }}</span></td>
+        <td class="num">{{ p.outgoing_links }}</td>
+        <td class="num muted">{{ '%d ms' % p.elapsed_ms if p.elapsed_ms is not none else '' }}</td>
+      </tr>
+    {% else %}
+      <tr class="placeholder"><td colspan="6" class="muted">No pages yet…</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='crawl.js') }}"></script>{% endblock %}

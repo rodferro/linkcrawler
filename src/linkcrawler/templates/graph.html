@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Graph · Crawl #{{ crawl.id }} · LinkCrawler{% endblock %}
+{% block body %}
+{% include "_crawl_header.html" %}
+<section class="card graph-card">
+  <div class="graph-toolbar">
+    <label class="check">Layout
+      <select id="layout">
+        <option value="concentric">Rings by depth</option>
+        <option value="cose">Force-directed</option>
+        <option value="breadthfirst">Tree</option>
+      </select>
+    </label>
+    <label class="check"><input type="checkbox" id="uncrawled"> Show uncrawled targets</label>
+    <span class="legend">
+      <i class="dot start"></i>start <i class="dot ok"></i>crawled <i class="dot error"></i>error <i class="dot uncrawled"></i>not crawled
+    </span>
+    <button class="btn" id="fit">Fit</button>
+  </div>
+  <div id="graph" role="img" aria-label="Link graph of crawled pages"></div>
+  <aside id="node-info" class="node-info muted">Click a node to highlight its links. Node size reflects inbound links; hover for labels.</aside>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+<script src="{{ url_for('static', path='crawl.js') }}"></script>
+<script src="{{ url_for('static', path='graph.js') }}"></script>
+{% endblock %}
