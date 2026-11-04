@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge, field %}
+{% block body %}
+<section class="card">
+  <h1>New crawl</h1>
+  <form method="post" action="/crawls" class="crawl-form" novalidate>
+    <label class="field url{% if errors.get('url') %} has-error{% endif %}">
+      <span>Start URL</span>
+      <input type="url" name="url" value="{{ form.get('url', '') }}" placeholder="https://example.com" required autofocus>
+      {% if errors.get('url') %}<small class="error">{{ errors['url'] }}</small>{% endif %}
+    </label>
+    <div class="grid">
+      {{ field("max_depth", "Max depth", form, errors, defaults.max_depth, min=0, max=10) }}
+      {{ field("max_pages", "Max pages", form, errors, defaults.max_pages, min=1, max=2000) }}
+      {{ field("per_host_concurrency", "Per-host concurrency", form, errors, defaults.per_host_concurrency, min=1, max=16) }}
+      {{ field("per_host_delay", "Per-host delay (s)", form, errors, defaults.per_host_delay, step="0.1", min=0, max=30) }}
+    </div>
+    <details class="advanced">
+      <summary>Advanced</summary>
+      <div class="grid">
+        {{ field("concurrency", "Total workers", form, errors, defaults.concurrency, min=1, max=32) }}
+        {{ field("timeout", "Timeout (s)", form, errors, defaults.request_timeout, step="0.5", min=1, max=120) }}
+        {{ field("user_agent", "User-Agent", form, errors, defaults.user_agent, type="text") }}
+      </div>
+    </details>
+    <div class="row">
+      <label class="check"><input type="checkbox" name="same_domain" {% if form.get('same_domain') %}checked{% endif %}> Stay on the same domain</label>
+      <label class="check"><input type="checkbox" name="respect_robots" {% if form.get('respect_robots') %}checked{% endif %}> Respect robots.txt</label>
+      <button class="btn primary" type="submit">Start crawl</button>
+    </div>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Recent crawls</h2>
+  {% if crawls %}
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>#</th><th>Start URL</th><th>Status</th><th class="num">Pages</th><th class="num">Links</th><th>Started</th></tr></thead>
+    <tbody>
+    {% for c in crawls %}
+      <tr>
+        <td><a href="{{ url_for('crawl_detail', crawl_id=c.id) }}">{{ c.id }}</a></td>
+        <td class="url"><a href="{{ url_for('crawl_detail', crawl_id=c.id) }}">{{ c.start_url }}</a></td>
+        <td>{{ badge(c.status) }}</td>
+        <td class="num">{{ c.pages_crawled }}</td>
+        <td class="num">{{ c.links_found }}</td>
+        <td class="muted">{{ c.created_at.strftime('%Y-%m-%d %H:%M UTC') }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% else %}
+  <p class="muted">No crawls yet. Start one above.</p>
+  {% endif %}
+</section>
+{% endblock %}
