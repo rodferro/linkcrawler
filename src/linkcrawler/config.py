@@ -13,7 +13,7 @@ from linkcrawler import __version__
 # Using an absolute anchor means the database location never depends on the cwd.
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-DEFAULT_USER_AGENT = f"LinkCrawler/{__version__} (+https://github.com/rodferro/tech-test)"
+DEFAULT_USER_AGENT = f"LinkCrawler/{__version__} (+https://github.com/rodferro/linkgraph)"
 
 
 class Settings(BaseSettings):

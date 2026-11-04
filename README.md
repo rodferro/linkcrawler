@@ -1,6 +1,6 @@
 # LinkCrawler
 
-[![CI](https://github.com/rodferro/tech-test/actions/workflows/ci.yml/badge.svg)](https://github.com/rodferro/tech-test/actions/workflows/ci.yml)
+[![CI](https://github.com/rodferro/linkgraph/actions/workflows/ci.yml/badge.svg)](https://github.com/rodferro/linkgraph/actions/workflows/ci.yml)
 
 A polite, asynchronous web crawler that maps the link graph of a website. Start a crawl
 from the browser (or the JSON API), watch it progress live, then explore the pages as a
@@ -58,7 +58,7 @@ with `CRAWLER_`. The crawl settings are defaults: each crawl can override them f
 | Variable | Default | Meaning |
 | --- | --- | --- |
 | `CRAWLER_DATABASE_URL` | `sqlite+aiosqlite:///<repo>/data/crawler.db` | SQLAlchemy async URL |
-| `CRAWLER_USER_AGENT` | `LinkCrawler/2.0 (+https://github.com/rodferro/tech-test)` | Sent with every request and matched against `robots.txt` |
+| `CRAWLER_USER_AGENT` | `LinkCrawler/2.0 (+https://github.com/rodferro/linkgraph)` | Sent with every request and matched against `robots.txt` |
 | `CRAWLER_REQUEST_TIMEOUT` | `10` | Seconds per request |
 | `CRAWLER_MAX_PAGES` | `50` | Pages fetched per crawl |
 | `CRAWLER_MAX_DEPTH` | `2` | Link hops from the start URL |
