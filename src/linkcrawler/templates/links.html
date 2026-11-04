@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Links · Crawl #{{ crawl.id }} · LinkCrawler{% endblock %}
+{% block body %}
+{% include "_crawl_header.html" %}
+<section class="card">
+  <form class="filter" method="get">
+    <input type="search" name="q" value="{{ q }}" placeholder="Filter by URL…">
+    <button class="btn" type="submit">Filter</button>
+    <span class="muted">{{ total }} link{{ '' if total == 1 else 's' }}</span>
+  </form>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>From</th><th>To</th><th>Target crawled</th></tr></thead>
+    <tbody>
+    {% for l in links %}
+      <tr>
+        <td class="url">{{ l.source_url }}</td>
+        <td class="url"><a href="{{ l.target_url }}" rel="noreferrer noopener" target="_blank">{{ l.target_url }}</a></td>
+        <td>{{ '✓' if l.target_crawled else '' }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="3" class="muted">No links{% if q %} matching “{{ q }}”{% endif %}.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% if pages_total > 1 %}
+  <nav class="pager">
+    {% if page > 1 %}<a class="btn" href="?q={{ q | urlencode }}&page={{ page - 1 }}">← Prev</a>{% endif %}
+    <span class="muted">Page {{ page }} of {{ pages_total }}</span>
+    {% if page < pages_total %}<a class="btn" href="?q={{ q | urlencode }}&page={{ page + 1 }}">Next →</a>{% endif %}
+  </nav>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='crawl.js') }}"></script>{% endblock %}

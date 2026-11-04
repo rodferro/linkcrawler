@@ -102,3 +102,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# LinkCrawler runtime data (SQLite databases)
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite3
+.ruff_cache/

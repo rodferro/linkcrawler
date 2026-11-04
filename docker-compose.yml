@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    image: linkcrawler:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - crawler-data:/data
+    environment:
+      # Any setting from linkcrawler/config.py can be overridden with CRAWLER_<NAME>.
+      CRAWLER_MAX_PAGES: "100"
+      CRAWLER_PER_HOST_DELAY: "0.5"
+    restart: unless-stopped
+
+volumes:
+  crawler-data:
